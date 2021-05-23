@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?> 
+<Root>
+	<Value name="Rangefinder" value="true" />
+	<Archive name="Rangefinder_Cfg" />
+</Root>
