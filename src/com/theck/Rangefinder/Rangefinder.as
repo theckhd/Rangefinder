@@ -27,7 +27,7 @@ class com.theck.Rangefinder.Rangefinder
 	static var debugMode:Boolean = false;
 	
 	// Version
-	static var version:String = "0.5.1";
+	static var version:String = "0.5.5";
 	
 	private var m_swfRoot:MovieClip;	
 	public  var clip:MovieClip;	
@@ -44,7 +44,7 @@ class com.theck.Rangefinder.Rangefinder
 		
 		var fontSize:Number = 40;
 		var m_symbol:String = String.fromCharCode(216); //174 for R, 164 for currency, 216 for o with strike
-		var hoffset:Number = 50;
+		var hoffset:Number = 100;
 		var voffset:Number = -0.5*fontSize - 10;
 		
 		clip = m_swfRoot.createEmptyMovieClip("RangeFinder", m_swfRoot.getNextHighestDepth());
@@ -83,6 +83,9 @@ class com.theck.Rangefinder.Rangefinder
 		// connect signals
 		GlobalSignal.SignalSetGUIEditMode.Connect(GUIEdit, this);
 		Shortcut.SignalShortcutRangeEnabled.Connect(OnShortcutRangeEnabled, this );
+		Shortcut.SignalShortcutAdded.Connect(AbilityChanged, this);
+		Shortcut.SignalShortcutRemoved.Connect(AbilityChanged, this);
+		Shortcut.SignalShortcutMoved.Connect(AbilityChanged, this);
 		
 		GUIEdit(false);
 	}
@@ -141,6 +144,9 @@ class com.theck.Rangefinder.Rangefinder
 		SetVisible(m_off, state);
 	}
 	
+	private function AbilityChanged() {
+		GUIEdit(false);
+	}
 	
 	
 	//////////////////////////////////////////////////////////
