@@ -27,7 +27,7 @@ class com.theck.Rangefinder.Rangefinder
 	static var debugMode:Boolean = false;
 	
 	// Version
-	static var version:String = "0.5.0";
+	static var version:String = "0.5.1";
 	
 	private var m_swfRoot:MovieClip;	
 	public  var clip:MovieClip;	
@@ -43,7 +43,7 @@ class com.theck.Rangefinder.Rangefinder
         m_swfRoot = swfRoot;
 		
 		var fontSize:Number = 40;
-		var m_symbol:String = String.fromCharCode(174); //174 for R, 164 for currency
+		var m_symbol:String = String.fromCharCode(216); //174 for R, 164 for currency, 216 for o with strike
 		var hoffset:Number = 50;
 		var voffset:Number = -0.5*fontSize - 10;
 		
@@ -111,7 +111,8 @@ class com.theck.Rangefinder.Rangefinder
 		field.background = true;
 		field.backgroundColor = 0x000000;
 		field.autoSize = "center";
-		field.textColor = COLOR_OUT_OF_RANGE;
+		field.textColor = COLOR_OUT_OF_RANGE;		
+		field._alpha = 50;
 		//field._visible = true;
 	}
 	
