@@ -3,29 +3,19 @@
 * @author theck
 */
 
-//import GUI.HUD.AbilityBase;
 import com.GameInterface.Game.Shortcut;
-import com.theck.Rangefinder.ConfigManager;
-//import com.GameInterface.Game.ShortcutBase;
-//import com.GameInterface.Game.ShortcutData;
 import com.GameInterface.Inventory;
 import com.GameInterface.InventoryItem;
-//import com.GameInterface.Spell;
-//import com.GameInterface.SpellBase;
 import com.Utils.Archive;
 import com.GameInterface.Game.Character;
-//import com.GameInterface.Game.CharacterBase;
 import com.Utils.ID32;
 import com.Utils.Text;
-//import flash.geom.Point;
 import com.Utils.GlobalSignal;
-//import mx.utils.Delegate;
-//import com.theck.Utils.Debugger;
+import com.theck.Rangefinder.ConfigManager;
 
 class com.theck.Rangefinder.Rangefinder 
-
 {
-	static var debugMode:Boolean = true;
+	static var debugMode:Boolean = false;
 	
 	// Version
 	static var version:String = "0.6";
@@ -37,21 +27,19 @@ class com.theck.Rangefinder.Rangefinder
 	private var m_inventory:Inventory;		
 	static var COLOR_OUT_OF_RANGE:Number = 0xFF0000;
 	
-	private var Config:ConfigManager;
+	private var CFM:ConfigManager;
 	
 	public function Rangefinder(swfRoot:MovieClip){
 		Debug("constructor called")
 		
         m_swfRoot = swfRoot;
 		
-		Config = ConfigManager("Rangefinder");
-		Config.NewSetting("hoffset", 100, "");
-		Config.NewSetting("fontsize", 40, "");
+		CFM = new ConfigManager();
+		CFM.NewSetting("hoffset", 150, "");
+		CFM.NewSetting("fontsize", 60, "");
 		
-		Config.SignalValueChanged.Connect(ReCreateTextFields, this);
-		
-		Debug("hoffset: " + Config.GetValue("hoffset"));
-		Debug("fontsize: " + Config.GetValue("fontsize"));
+		Debug("hoffset: " + CFM.GetValue("hoffset"));
+		Debug("fontsize: " + CFM.GetValue("fontsize"));
 		
 		clip = m_swfRoot.createEmptyMovieClip("RangeFinder", m_swfRoot.getNextHighestDepth());
 		
@@ -69,22 +57,27 @@ class com.theck.Rangefinder.Rangefinder
 		Shortcut.SignalShortcutRangeEnabled.Connect(OnShortcutRangeEnabled, this );
 		Shortcut.SignalShortcutAdded.Connect(AbilityChanged, this);
 		Shortcut.SignalShortcutRemoved.Connect(AbilityChanged, this);
-		Shortcut.SignalShortcutMoved.Connect(AbilityChanged, this);
+		Shortcut.SignalShortcutMoved.Connect(AbilityChanged, this);		
+		CFM.SignalValueChanged.Connect(ReCreateTextFields, this);
 		
 		GUIEdit(false);
 	}
 
 	public function Unload(){
-	
+		GlobalSignal.SignalSetGUIEditMode.Disconnect(GUIEdit, this);
+		Shortcut.SignalShortcutRangeEnabled.Disconnect(OnShortcutRangeEnabled, this );
+		Shortcut.SignalShortcutAdded.Disconnect(AbilityChanged, this);
+		Shortcut.SignalShortcutRemoved.Disconnect(AbilityChanged, this);
+		Shortcut.SignalShortcutMoved.Disconnect(AbilityChanged, this);		
+		CFM.SignalValueChanged.Disconnect(ReCreateTextFields, this);	
 	}
 	
 	public function Activate(config:Archive){
 		Debug("Activate()")
 		
-		Config.LoadConfig(config);
+		CFM.LoadConfig(config);
 		
 		if ( !m_main || !m_off ) {
-			Debug("RCTF called");
 			ReCreateTextFields();
 		}
 		
@@ -94,8 +87,8 @@ class com.theck.Rangefinder.Rangefinder
 
 	public function Deactivate():Archive{
 		var config = new Archive();
-		config = Config.SaveConfig();
-		return config
+		config = CFM.SaveConfig();
+		return config;
 	}
 	
 	//////////////////////////////////////////////////////////
@@ -103,13 +96,14 @@ class com.theck.Rangefinder.Rangefinder
 	//////////////////////////////////////////////////////////
 
 	private function CreateTextFields() {
-		var fontSize:Number = 40; // Config.GetValue("fontsize");
-		var hoffset:Number = 100; // Config.GetValue("hoffset");
+		Debug("CTF called");
+		var fontSize:Number = CFM.GetValue("fontsize");
+		var hoffset:Number = CFM.GetValue("hoffset");
 		var voffset:Number = -0.5*fontSize - 10;
 		var m_symbol:String = String.fromCharCode(216); //174 for R, 164 for currency, 216 for o with strike
 		
-		Debug("CTF hoffset: " + Config.GetValue("hoffset"));
-		Debug("CTF fontsize: " + Config.GetValue("fontsize"));
+		Debug("CTF hoffset: " + CFM.GetValue("hoffset"));
+		Debug("CTF fontsize: " + CFM.GetValue("fontsize"));
 		
 		var textFormat:TextFormat = new TextFormat("_StandardFont", fontSize, 0xFFFFFF, true);
 		textFormat.align = "left";
@@ -131,9 +125,12 @@ class com.theck.Rangefinder.Rangefinder
 		
 		SetText(m_main, m_symbol );
 		SetText(m_off, m_symbol );
+		
+		GUIEdit(false);
 	}
 	
 	private function DestroyTextFields() {
+		Debug("DTF called");
 		m_main.removeTextField();
 		m_off.removeTextField();
 		//m_main = undefined;
@@ -141,6 +138,7 @@ class com.theck.Rangefinder.Rangefinder
 	}
 	
 	private function ReCreateTextFields() {
+		Debug("RCTF called");
 		DestroyTextFields();
 		CreateTextFields();
 	}

@@ -11,7 +11,7 @@ import flash.geom.Point;
 
 class com.theck.Rangefinder.ConfigManager
 {
-	static var debugMode:Boolean = true;
+	static var debugMode:Boolean = false;
 	
 	
 	static var DVPREFIX:String = "rf";
@@ -122,9 +122,7 @@ class com.theck.Rangefinder.ConfigManager
 	public function GetDefault(key:String) { 
 		return GetSetting(key).defaultValue; 		
 	}
-	
-	
-	
+		
 	// Useful if a meaningful default can't be provided until after saved values have been loaded
 	// NewSetting(key, value) could do something similar, but would stomp the loaded value
 	public function ChangeDefault(key:String, value) { 
