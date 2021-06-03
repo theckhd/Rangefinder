@@ -20,3 +20,66 @@ The spacing and size of the indicators can be adjusted with the following comman
 horizontal offset: `/setoption rf_hoffset #` (default 150)
 
 size: `/setoption rf_fontsize #` (default 60)
+
+## List of Abilities
+These are the abilities the addon uses to determine ranges:
+
+### Assault Rifle
+- Placed Shot
+- Full Auto
+- Burst Fire
+- Incendiary Grenade
+- Essence Grenades
+- Red Mist
+- Unveil Essence
+- High Explosive Grenade
+### Blade
+- Flowing Strike
+- Tsunami
+- Swallow Cut
+- Snake's Bite
+### Blood
+- Torment
+- Reap
+- Maleficium
+- Runic Hex
+- Rupture
+- Desecrate
+- Eldritch Scourge
+### Chaos
+- Deconstruct
+- Breakdown
+- Distortion
+### Elemental
+- Ice Beam
+- Fire Bolt
+- Fireball
+- Shock
+- Chain Lightning
+- Mjolnir
+### Fist
+- Thrash
+- Mangle
+- Eviscerate
+- Berserk
+- Ravage
+- Maim
+### Hammer
+- Blindside
+- Pulverize
+- Smash
+- Demolish
+### Pistol
+- Hair Trigger
+- Seeking Bullet
+- Controlled Shooting
+- Dual Shot
+- Unload
+- Kill Blind
+- All In
+- Trick Shot
+### Shotgun
+- Pump Action
+- Rocket Pod
+- Raging Shot
+- HEAT Round
